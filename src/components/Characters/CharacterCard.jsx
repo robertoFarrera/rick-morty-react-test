@@ -1,43 +1,61 @@
 import React, { Component } from 'react'
-import { Card, CardHeader, CardMedia, CardContent, Typography, CardActions, Button, withStyles } from '@material-ui/core'
+import { Card, CardHeader, CardMedia, CardActions, Button, withStyles, Badge, Container } from '@material-ui/core'
 
 const styles = theme => ({
   media: {
     height: 0,
     paddingTop: '100%'
+  },
+  green: {
+    color: '#fff',
+    '& .MuiBadge-badge': {
+      backgroundColor: '#66bb6a'
+    }
+  },
+  red: {
+    color: '#fff',
+    '& .MuiBadge-badge': {
+      backgroundColor: '#f44336'
+    }
+  },
+  grey: {
+    color: '#fff',
+    '& .MuiBadge-badge': {
+      backgroundColor: '#b0bec5'
+    }
   }
 })
 
 class characterCard extends Component {
   render () {
-    const { classes } = this.props
+    const { classes, character } = this.props
     return (
-      <div>
-        <Card>
-          <CardHeader
-            title='Rick Sanchez'
-            subheader='Alive'
-          />
-          <CardMedia
-            className={classes.media}
-            image='https://rickandmortyapi.com/api/character/avatar/1.jpeg'
-            title='Paella dish'
-          />
-          <CardContent>
-            <Typography variant='body2' color='textSecondary' component='p'>
-              Species: Human
-            </Typography>
-            <Typography variant='body2' color='textSecondary' component='p'>
-              Gender: Male
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button color='secondary'>
-              Ver detalles
-            </Button>
-          </CardActions>
-        </Card>
-      </div>
+      <Card>
+        <CardHeader
+          title={character.name}
+          subheader={
+            <Container>
+              <Badge
+                badgeContent={character.status} className={
+                  (character.status === 'Alive' ? classes.green
+                    : character.status === 'Dead' ? classes.red : classes.grey)
+                }
+              />
+            </Container>
+          }
+        />
+
+        <CardMedia
+          className={classes.media}
+          image={character.image}
+          title={character.name}
+        />
+        <CardActions>
+          <Button color='secondary'>
+            Ver detalles
+          </Button>
+        </CardActions>
+      </Card>
     )
   }
 }

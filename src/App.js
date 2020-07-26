@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   BrowserRouter as Router,
   Switch,
@@ -9,7 +9,7 @@ import {
 // Load styles and assets
 import 'fontsource-roboto'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import { createMuiTheme, ThemeProvider } from '@material-ui/core'
+import { createMuiTheme, ThemeProvider, Switch as SwitchButton, FormControlLabel, Grid } from '@material-ui/core'
 
 // Load components
 import MainPage from './components/MainPage'
@@ -17,41 +17,42 @@ import SearchResults from './components/SearchResults'
 import Page404 from './components/Page404'
 import MainHeader from './components/MainHeader'
 
-const theme = createMuiTheme({
-  palette: {
-    type: 'dark',
-    primary: {
-      light: '#12e0fe',
-      main: '#00afc8',
-      dark: '#00c2de',
-      contrastText: '#fff'
-    },
-    secondary: {
-      light: '#bee065',
-      main: '#b4dc4d',
-      dark: '#a9d734',
-      contrastText: '#000'
-    }
-  },
-  overrides: {
-    MuiFilledInput: {
-      root: {
-        backgroundColor: 'rgba(255,255,255,.4)',
-        '&:hover:not($disabled)': {
-          backgroundColor: 'rgba(255,255,255,.6)'
-        }
+export default function App () {
+  const [dark, setDark] = useState(false)
+
+  const setTheme = (event) => {
+    setDark(!dark)
+  }
+
+  const theme = createMuiTheme({
+    palette: {
+      type: dark ? 'dark' : 'light',
+      primary: {
+        light: '#12e0fe',
+        main: '#00afc8',
+        dark: '#00c2de',
+        contrastText: '#fff'
+      },
+      secondary: {
+        light: '#bee065',
+        main: '#b4dc4d',
+        dark: '#a9d734',
+        contrastText: '#000'
       }
     }
-  }
-})
-
-export default function App () {
+  })
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
         <div>
           <MainHeader />
+          <Grid container justify='flex-end'>
+            <FormControlLabel
+              control={<SwitchButton checked={dark} onChange={setTheme} name='darkMode' />}
+              label='Dark Mode'
+            />
+          </Grid>
 
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}

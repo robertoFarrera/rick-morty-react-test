@@ -6,9 +6,8 @@ class MainPage extends Component {
   render () {
     return (
       <main>
-        <LastEpisodes />
-        <hr />
         <RecentCharacters />
+        <LastEpisodes />
       </main>
     )
   }
