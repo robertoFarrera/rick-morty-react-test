@@ -1,8 +1,16 @@
 import React, { Component } from 'react'
-import { Card, CardHeader, CardMedia, CardActions, Button, withStyles, Badge, Container } from '@material-ui/core'
+import { Card, CardHeader, CardMedia, CardActions, Button, withStyles, Badge, Container, Typography } from '@material-ui/core'
 
 const styles = theme => ({
+  root: {
+    maxWidth: '265px',
+    margin: '0 auto',
+    '& .MuiCardHeader-root': {
+      display: 'block'
+    }
+  },
   media: {
+    width: '100%',
     height: 0,
     paddingTop: '100%'
   },
@@ -30,9 +38,13 @@ class characterCard extends Component {
   render () {
     const { classes, character } = this.props
     return (
-      <Card>
+      <Card className={classes.root} raised>
         <CardHeader
-          title={character.name}
+          title={
+            <Typography variant='h5' noWrap>
+              {character.name}
+            </Typography>
+          }
           subheader={
             <Container>
               <Badge
@@ -51,7 +63,7 @@ class characterCard extends Component {
           title={character.name}
         />
         <CardActions>
-          <Button color='secondary'>
+          <Button color='primary' onClick={() => this.props.onButtonClick(character)}>
             Ver detalles
           </Button>
         </CardActions>

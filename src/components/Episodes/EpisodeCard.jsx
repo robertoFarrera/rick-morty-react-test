@@ -1,21 +1,32 @@
 import React, { Component } from 'react'
-import { Card, CardHeader, CardActions, Button, withStyles } from '@material-ui/core'
+import { Card, CardHeader, CardActions, Button, withStyles, Typography } from '@material-ui/core'
 
 const styles = theme => ({
-
+  root: {
+    maxWidth: '265px',
+    margin: '0 auto',
+    '& .MuiCardHeader-root': {
+      display: 'block'
+    }
+  }
 })
 
 class EpisodeCard extends Component {
   render () {
+    const { classes, episode } = this.props
     return (
       <div>
-        <Card>
+        <Card className={classes.root} raised>
           <CardHeader
-            title='The Ricklantis Mixup'
-            subheader='September 10, 2017'
+            title={
+              <Typography variant='h5' noWrap>
+                {episode.name}
+              </Typography>
+            }
+            subheader={episode.episode}
           />
           <CardActions>
-            <Button color='secondary'>
+            <Button color='primary' onClick={() => this.props.onButtonClick(episode)}>
               Ver detalles
             </Button>
           </CardActions>

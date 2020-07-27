@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import LastEpisodes from './Episodes/LastEpisodes'
+import LastsEpisodes from './Episodes/LastsEpisodes'
 import RecentCharacters from './Characters/RecentCharacters'
 
 class MainPage extends Component {
@@ -7,7 +7,7 @@ class MainPage extends Component {
     return (
       <main>
         <RecentCharacters />
-        <LastEpisodes />
+        <LastsEpisodes />
       </main>
     )
   }

@@ -1,13 +1,17 @@
 import React from 'react'
+import { Container, Typography } from '@material-ui/core'
 
 const Page404 = () => {
   return (
-    <div>
-      <h2>Error 404</h2>
-      <h3>
+    <Container maxWidth='sm'>
+      <Typography variant='h3'>
+        Error 404
+      </Typography>
+      <hr /><br />
+      <Typography variant='h5'>
         La página que buscas no se encuentra!
-      </h3>
-    </div>
+      </Typography>
+    </Container>
   )
 }
 

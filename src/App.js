@@ -1,21 +1,11 @@
 import React, { useState } from 'react'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect
-} from 'react-router-dom'
 
 // Load styles and assets
 import 'fontsource-roboto'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import { createMuiTheme, ThemeProvider, Switch as SwitchButton, FormControlLabel, Grid } from '@material-ui/core'
-
-// Load components
-import MainPage from './components/MainPage'
-import SearchResults from './components/SearchResults'
-import Page404 from './components/Page404'
-import MainHeader from './components/MainHeader'
+import { createMuiTheme, ThemeProvider } from '@material-ui/core'
+import Router from './router'
+import 'moment/locale/es'
 
 export default function App () {
   const [dark, setDark] = useState(false)
@@ -41,29 +31,12 @@ export default function App () {
       }
     }
   })
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
-        <div>
-          <MainHeader />
-          <Grid container justify='flex-end'>
-            <FormControlLabel
-              control={<SwitchButton checked={dark} onChange={setTheme} name='darkMode' />}
-              label='Dark Mode'
-            />
-          </Grid>
-
-          {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-          <Switch>
-            <Route exact path='/' component={MainPage} />
-            <Route path='/buscar' component={SearchResults} />
-            <Route path='/404' component={Page404} />
-            <Redirect from='*' to='/404' />
-          </Switch>
-        </div>
-      </Router>
+      {/* React Router to handle all views */}
+      <Router setTheme={setTheme} dark={dark} />
     </ThemeProvider>
   )
 }

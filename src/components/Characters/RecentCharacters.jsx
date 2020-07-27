@@ -1,61 +1,62 @@
 import React, { Component } from 'react'
-import { Container, Grid, withStyles } from '@material-ui/core'
-import Pagination from '@material-ui/lab/Pagination'
+import { Container, Grid, Typography } from '@material-ui/core'
 import CharacterCard from './CharacterCard'
 import axios from 'axios'
-
-const styles = theme => ({
-  pagination: {
-    margin: '4rem 0'
-  }
-})
+import CharacterDetails from './CharacterDetails'
 
 class recentCharacters extends Component {
   state = {
     characters: [],
-    info: {},
-    page: 1
+    character: {},
+    isOpen: false
   }
 
   componentDidMount () {
-    axios.get('https://rickandmortyapi.com/api/character/')
+    // Create Array to get 10 random characters from RMAPI
+    const randomArray = Array.from({ length: 8 }, () => Math.floor(Math.random() * 591))
+
+    // Send get request to RMAPI
+    axios.get('https://rickandmortyapi.com/api/character/' + randomArray)
       .then(res => {
-        this.setState({ characters: res.data.results })
-        this.setState({ info: res.data.info })
+        this.setState({ characters: res.data })
       })
   }
 
-  handleChange = (event, value) => {
-    axios.get(`https://rickandmortyapi.com/api/character/?page=${value}`)
-      .then(res => {
-        this.setState({ characters: res.data.results })
-        this.setState({ info: res.data.info })
-        this.setState({ page: value })
-      })
+  handleOpenModal = (character) => {
+    this.setState({
+      isOpen: true,
+      character
+    })
+  }
+
+  handleCloseModal = () => {
+    console.log('Cerrado')
+    this.setState({
+      isOpen: false,
+      character: {}
+    })
   }
 
   render () {
-    const { classes } = this.props
     return (
       <Container>
-        <h1>Personajes Recientes</h1>
+        <Typography variant='h3' component='h1'>
+          Personajes Recientes
+        </Typography>
+        <br />
         <Grid container spacing={4} justify='center'>
           {this.state.characters.map(character => {
             return (
-              <Grid item md={4} lg={3} key={character.id}>
-                <CharacterCard character={character} />
+              <Grid item xs={12} sm={6} md={4} lg={3} key={character.id}>
+                <CharacterCard character={character} onButtonClick={this.handleOpenModal} />
               </Grid>
             )
           })}
         </Grid>
-        <Grid container justify='center' className={classes.pagination}>
-          <Grid item>
-            <Pagination count={this.state.info.pages} page={this.state.page} color='primary' onChange={this.handleChange} />
-          </Grid>
-        </Grid>
+        <CharacterDetails character={this.state.character} isOpen={this.state.isOpen} onCloseModal={this.handleCloseModal} />
       </Container>
     )
   }
 }
 
-export default withStyles(styles)(recentCharacters)
+export default recentCharacters

@@ -4,6 +4,7 @@ import SearchIcon from '@material-ui/icons/Search'
 import background from '../images/background.png'
 import rickMorty from '../images/rick-morty.png'
 import logo from '../images/logo.png'
+import { Redirect, Link } from 'react-router-dom'
 
 const styles = theme => ({
   img: {
@@ -71,38 +72,52 @@ const styles = theme => ({
 })
 
 class MainHeader extends Component {
-  constructor () {
-    super()
-    this.state = { searchString: '' }
+  constructor (props) {
+    super(props)
+    this.searchInput = React.createRef()
+    this.state = {
+      query: '',
+      redirect: false
+    }
   }
 
   // Function to send search form
   handleSubmit = (e) => {
     e.preventDefault()
-    console.log(`Buscando: ${this.state.searchString}`)
-    this.setState({ searchString: '' })
-  }
-
-  handleChange = (e) => {
-    this.setState({ searchString: e.target.value })
+    this.setState({
+      query: this.searchInput.current.value,
+      redirect: true
+    })
   }
 
   render () {
     const { classes } = this.props
+
+    if (this.state.redirect) {
+      this.setState({
+        redirect: false
+      })
+      return (
+        <Redirect to={`/search-redirect/${this.state.query}`} />
+      )
+    }
+
     return (
       <header>
         <Grid container justify='center' alignItems='center' className={classes.front}>
           <div className={classes.background} />
           <div className={classes.overlap} />
           <Grid item md={6}>
-            <img className={classes.img} src={logo} alt='background' />
+            <Link to='/'>
+              <img className={classes.img} src={logo} alt='background' />
+            </Link>
             <form noValidate autoComplete='off' className={classes.form} onSubmit={this.handleSubmit}>
               <Grid container alignItems='center' justify='center'>
                 <Grid item>
                   <TextField
                     id='search' label='Buscar' type='search'
                     variant='outlined' size='small' classes={{ root: classes.input }}
-                    value={this.state.searchString} onChange={this.handleChange}
+                    inputRef={this.searchInput}
                   />
                 </Grid>
                 <Grid item>
@@ -117,7 +132,6 @@ class MainHeader extends Component {
                 </Grid>
               </Grid>
             </form>
-            <p style={{ color: '#fff' }}>{this.state.searchString}</p>
           </Grid>
           <Hidden smDown>
             <Grid item md={6}>
