@@ -5,6 +5,8 @@ import CharacterCard from './Characters/CharacterCard'
 import { Pagination, Alert, AlertTitle } from '@material-ui/lab'
 import loader from '../images/loading.svg'
 import EpisodeCard from './Episodes/EpisodeCard'
+import CharacterDetails from './Characters/CharacterDetails'
+import EpisodeInformation from './Episodes/EpisodeInformation'
 
 const styles = theme => ({
   marginY: {
@@ -18,10 +20,14 @@ class SearchResults extends Component {
     characterInfo: {},
     characterPage: 1,
     characterLoading: true,
+    character: {},
+    characterIsOpen: false,
     episodes: [],
     episodeInfo: {},
     episodePage: 1,
-    episodeLoading: true
+    episodeLoading: true,
+    episode: {},
+    episodeIsOpen: false
   }
 
   query = new URLSearchParams(this.props.location.search).get('texto')
@@ -69,6 +75,36 @@ class SearchResults extends Component {
       })
   }
 
+  handleOpenCharacterModal = (character) => {
+    this.setState({
+      characterIsOpen: true,
+      character
+    })
+  }
+
+  handleCloseCharacterModal = () => {
+    console.log('Cerrado')
+    this.setState({
+      characterIsOpen: false,
+      character: {}
+    })
+  }
+
+  handleOpenEpisodeModal = (episode) => {
+    this.setState({
+      episodeIsOpen: true,
+      episode
+    })
+  }
+
+  handleCloseEpisodeModal = () => {
+    console.log('Cerrado')
+    this.setState({
+      episodeIsOpen: false,
+      episode: {}
+    })
+  }
+
   render () {
     const { classes } = this.props
     return (
@@ -104,7 +140,7 @@ class SearchResults extends Component {
                 {this.state.characters.map(character => {
                   return (
                     <Grid item xs={12} sm={6} md={4} lg={3} key={character.id}>
-                      <CharacterCard character={character} />
+                      <CharacterCard character={character} onButtonClick={this.handleOpenCharacterModal} />
                     </Grid>
                   )
                 })}
@@ -114,6 +150,7 @@ class SearchResults extends Component {
                   <Pagination count={this.state.characterInfo.pages} page={this.state.characterPage} color='primary' onChange={this.handleCharacterPagination} />
                 </Grid>
               </Grid>
+              <CharacterDetails character={this.state.character} isOpen={this.state.characterIsOpen} onCloseModal={this.handleCloseCharacterModal} />
             </Container>
           )
         }{
@@ -143,7 +180,7 @@ class SearchResults extends Component {
                 {this.state.episodes.map(episode => {
                   return (
                     <Grid item xs={12} sm={6} md={4} lg={3} key={episode.id}>
-                      <EpisodeCard episode={episode} onButtonClick={this.handleOpenModal} />
+                      <EpisodeCard episode={episode} onButtonClick={this.handleOpenEpisodeModal} />
                     </Grid>
                   )
                 })}
@@ -153,6 +190,7 @@ class SearchResults extends Component {
                   <Pagination count={this.state.episodeInfo.pages} page={this.state.episodePage} color='primary' onChange={this.handleEpisodePagination} />
                 </Grid>
               </Grid>
+              <EpisodeInformation episode={this.state.episode} isOpen={this.state.episodeIsOpen} onCloseModal={this.handleCloseEpisodeModal} />
             </Container>
           )
         }
